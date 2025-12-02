@@ -41,9 +41,7 @@ Se quiser, posso escrever uma seção descrevendo a lógica EXATA do seu bot ao 
 
 ## 🛠 Tecnologias Utilizadas
 
-- Linguagem: ***(insira aqui: Python / Java / C++ / etc.)***  
-- Framework gráfico:  
-  - Ex: `pygame` (Python), Swing/JavaFX (Java), SDL (C++), etc.  
+- Linguagem: ***Java***    
 - Paradigma: programação estruturada / orientada a objetos  
 - Controle de estado via game loop
 
@@ -51,6 +49,6 @@ Se quiser, posso escrever uma seção descrevendo a lógica EXATA do seu bot ao 
 
 ## 📂 Estrutura do Projeto
 
-*(Adapte conforme sua pasta real)*
+
 
 
