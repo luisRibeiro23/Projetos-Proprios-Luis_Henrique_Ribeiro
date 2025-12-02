@@ -35,10 +35,10 @@ cd Projetos-Proprios-Luis_Henrique_Ribeiro/api-scanner
 pip install -r requirements.txt
 ```
 # Uso Basico
-
-**python3 main.py --url https://api.com**
-**python3 main.py --url https://api.com/users --token SEU_TOKEN_AQUI**
-
+```bash
+python3 main.py --url https://api.com
+python3 main.py --url https://api.com/users --token SEU_TOKEN_AQUI
+```
 === Teste de Headers de Segurança ===
 ✔ Content-Security-Policy presente
 ✔ Strict-Transport-Security presente
