@@ -12,8 +12,8 @@ def test_auth(url, token):
   console.print(f"[yellow]Sem token → {r_no_token.status_code}[/]")
   
   #2 Teste com token inválido
-  headers_invalid = {"Authorization": "Bearer INVALID123"
-  r_invalid = requests.get(url, headers=head_invalid)
+  headers_invalid = {"Authorization": "Bearer INVALID123"}
+  r_invalid = requests.get(url, headers=headers_invalid)
   console.print(f"[red]Token inválido → {r_invalid.status_code}[/]")
   
   #3 Teste com token adulterado (se JWT for inválido)

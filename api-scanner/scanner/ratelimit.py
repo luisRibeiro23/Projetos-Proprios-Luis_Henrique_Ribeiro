@@ -2,7 +2,7 @@ import requests
 from rich.console import Console 
 import time
 
-console = Concole()
+console = Console()
 
 def test_rate_limit(url):
   console.print("\n[bold cyan]=== Teste de Rate Limit ===[/]")
