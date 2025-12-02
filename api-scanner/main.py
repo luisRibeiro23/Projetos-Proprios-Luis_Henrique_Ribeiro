@@ -1,24 +1,23 @@
+import argparse
 from scanner.headers import scan_headers
 from scanner.methods import scan_methods
 from scanner.discovery import discover_endpoints
-from scanner.auth import test_auth
+from rich.console import Console
 
-import argparse
+console = Console()
 
 def main():
-    parser = argparse.ArgumentParser(description="API Security Scanner v1.0")
-    parser.add_argument("--url", required=True, help="Base URL da API")
-    parser.add_argument("--token", help="Token JWT opcional")
+    parser = argparse.ArgumentParser(description="API Security Scanner – v1.0")
+    parser.add_argument("--url", required=True, help="URL base da API")
     args = parser.parse_args()
 
-    print("[*] Iniciando análise da API:", args.url)
+    console.print("[bold magenta]Iniciando análise...[/]")
 
     scan_headers(args.url)
     scan_methods(args.url)
     discover_endpoints(args.url)
-    
-    if args.token:
-        test_auth(args.url, args.token)
+
+    console.print("\n[bold green]Finalizado![/]")
 
 if __name__ == "__main__":
     main()
