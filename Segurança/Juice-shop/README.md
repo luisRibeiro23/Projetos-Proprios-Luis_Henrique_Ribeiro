@@ -59,3 +59,17 @@ Inclui desafios mais avançados:
 ---
 
 ## 📁 Estrutura da Pasta
+
+---
+
+## 🧠 Habilidades Demonstradas
+- Identificação e exploração de vulnerabilidades reais  
+- Entendimento prático do OWASP Top 10  
+- Manipulação de requisições HTTP  
+- Navegação em aplicações vulneráveis  
+- Documentação técnica de falhas  
+
+---
+
+## 🏁 Status
+Todos os desafios foram solucionados e documentados conforme solicitado.
