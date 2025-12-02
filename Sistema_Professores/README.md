@@ -13,8 +13,6 @@ Este projeto implementa um sistema simples para gerenciar professores — com ca
 
 - Java  
 - SQLite (via JDBC)  
-- (Opcional) IDE Eclipse/NetBeans/IntelliJ  
+- IDE Eclipse 
 - Git para versionamento
-
-## 📂 Estrutura do projeto (exemplo)
 
