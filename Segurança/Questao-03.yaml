@@ -1,0 +1,152 @@
+swagger: '2.0'
+
+info:
+  version: "0.3.0"
+  title: Music API
+
+host: api.muzicplayz.com
+basePath: /v3
+schemes:
+  - https
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /playlist:
+    get:
+      summary: Get list of playlists
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          type: integer
+        - name: offset
+          in: query
+          required: false
+          type: integer
+        - name: search
+          in: query
+          required: false
+          type: string
+      security:
+        - basicAuth: []
+      responses:
+        200:
+          description: Successful response
+
+    post:
+      summary: Create a new playlist
+      parameters:
+        - name: newPlaylist
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/newPlaylist'
+      security:
+        - basicAuth: []
+      responses:
+        200:
+          description: Playlist created successfully
+
+  /playlist/{playlist-id}:
+    delete:
+      summary: Delete a playlist by ID
+      parameters:
+        - name: playlist-id
+          in: path
+          required: true
+          type: string
+      security:
+        - basicAuth: []
+      responses:
+        200:
+          description: Playlist deleted successfully
+        410:
+          description: Playlist already deleted
+          schema:
+            $ref: '#/definitions/error'
+
+    get:
+      summary: Get a playlist by ID
+      parameters:
+        - name: playlist-id
+          in: path
+          required: true
+          type: string
+      security:
+        - basicAuth: []
+      responses:
+        200:
+          description: Playlist retrieved successfully
+          schema:
+            $ref: '#/definitions/playlistWithSongs'
+
+  /playlist/{playlist-id}/image:
+    get:
+      summary: Get PNG image of playlist
+      operationId: getImage
+      parameters:
+        - name: playlist-id
+          in: path
+          required: true
+          type: string
+      produces:
+        - image/png
+      responses:
+        200:
+          description: Successful response
+          schema:
+            type: file
+
+definitions:
+  newPlaylist:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+      songIds:
+        type: array
+        items:
+          type: integer
+
+  playlistWithSongs:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      songs:
+        type: array
+        items:
+          $ref: '#/definitions/song'
+
+  song:
+    type: object
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+
+  error:
+    type: object
+    properties:
+      errorMessage:
+        type: string
+      logData:
+        type: object
+        properties:
+          entry:
+            type: integer
+          date:
+            type: string
+
+securityDefinitions:
+  basicAuth:
+    type: basic
