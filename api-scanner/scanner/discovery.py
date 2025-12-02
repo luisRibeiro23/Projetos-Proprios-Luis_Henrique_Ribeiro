@@ -7,7 +7,7 @@ def discover_endpoints(url_base):
     console.print("\n[bold cyan]=== Descoberta de Endpoints ===[/]")
 
     try:
-        with open("wordlists/small.txt", "r") as f:
+        with open("wordLists/small.txt", "r") as f:
             words = [w.strip() for w in f.readlines()]
     except Exception:
         console.print("[red]Wordlist não encontrada[/]")
