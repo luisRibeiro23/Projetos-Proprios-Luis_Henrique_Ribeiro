@@ -15,3 +15,5 @@ Projeto desenvolvido para prática de segurança, APIs e automação.
 
 ```bash
 pip install -r requirements.txt
+````
+# Status: ✅ Versão 1 funcional (headers, métodos, descoberta)
