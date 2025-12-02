@@ -1,1 +1,13 @@
+admin
+login
+users
+auth
+health
+status
+v1
+v2
+docs
+swagger
+api
+config
 
