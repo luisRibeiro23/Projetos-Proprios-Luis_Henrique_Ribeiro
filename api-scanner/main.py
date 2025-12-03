@@ -3,6 +3,7 @@ import argparse
 from utils.logging_config import setup_logger
 
 # Importa as funções dos módulos do scanner
+from scanner.xss import test_xss
 from scanner.methods import test_http_methods_parallel
 from scanner.headers import test_security_headers
 from scanner.cors import test_cors
@@ -39,6 +40,11 @@ def main():
         # 3) CORS
         cors_result = test_cors(url)
         logger.info(f"Resultado CORS: {cors_result}")
+
+        # 3.5) XSS (teste básico em parâmetro de query)
+        xss_result = test_xss(url, param_name="q")
+        logger.info(f"Resultado XSS: vulnerável={xss_result['vulnerable']}")
+
 
         # 4) Rate limit
         rate_limit_result = test_rate_limit(url)
