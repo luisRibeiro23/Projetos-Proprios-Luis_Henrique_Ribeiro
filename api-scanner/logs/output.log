@@ -1,0 +1,65 @@
+[2025-12-02 21:40:58] [INFO] api_scanner - 🚀 Iniciando análise da API
+[2025-12-02 21:40:58] [INFO] api_scanner - Alvo: https://httpbin.org
+[2025-12-02 21:40:58] [INFO] api_scanner - 🔁 Iniciando teste de métodos em paralelo para https://httpbin.org
+[2025-12-02 21:40:59] [INFO] api_scanner - Método GET: status 200
+[2025-12-02 21:40:59] [INFO] api_scanner - Método DELETE: status 405
+[2025-12-02 21:40:59] [INFO] api_scanner - Método POST: status 405
+[2025-12-02 21:40:59] [INFO] api_scanner - Método OPTIONS: status 200
+[2025-12-02 21:41:00] [INFO] api_scanner - Método PUT: status 405
+[2025-12-02 21:41:00] [INFO] api_scanner - ✅ Teste de métodos paralelo concluído: {'GET': 200, 'DELETE': 405, 'POST': 405, 'OPTIONS': 200, 'PUT': 405}
+[2025-12-02 21:41:00] [INFO] api_scanner - 📊 Resultado dos testes de métodos HTTP:
+[2025-12-02 21:41:00] [INFO] api_scanner -  - GET: 200
+[2025-12-02 21:41:00] [INFO] api_scanner -  - DELETE: 405
+[2025-12-02 21:41:00] [INFO] api_scanner -  - POST: 405
+[2025-12-02 21:41:00] [INFO] api_scanner -  - OPTIONS: 200
+[2025-12-02 21:41:00] [INFO] api_scanner -  - PUT: 405
+[2025-12-02 21:41:00] [INFO] api_scanner - ✅ Análise concluída com sucesso.
+[2025-12-02 21:47:52] [INFO] api_scanner - 🚀 Iniciando análise da API
+[2025-12-02 21:47:52] [INFO] api_scanner - Alvo: https://httpbin.org
+[2025-12-02 21:47:52] [INFO] api_scanner - 🛡️ Testando headers de segurança em https://httpbin.org
+[2025-12-02 21:47:53] [WARNING] api_scanner - Header AUSENTE: Content-Security-Policy
+[2025-12-02 21:47:53] [WARNING] api_scanner - Header AUSENTE: Strict-Transport-Security
+[2025-12-02 21:47:53] [WARNING] api_scanner - Header AUSENTE: X-Frame-Options
+[2025-12-02 21:47:53] [WARNING] api_scanner - Header AUSENTE: X-Content-Type-Options
+[2025-12-02 21:47:53] [WARNING] api_scanner - Header AUSENTE: Referrer-Policy
+[2025-12-02 21:47:53] [INFO] api_scanner - Resultado headers: {'Content-Security-Policy': False, 'Strict-Transport-Security': False, 'X-Frame-Options': False, 'X-Content-Type-Options': False, 'Referrer-Policy': False}
+[2025-12-02 21:47:53] [INFO] api_scanner - 🔁 Iniciando teste de métodos em paralelo para https://httpbin.org
+[2025-12-02 21:47:54] [INFO] api_scanner - Método PUT: status 405
+[2025-12-02 21:47:54] [INFO] api_scanner - Método POST: status 405
+[2025-12-02 21:47:54] [INFO] api_scanner - Método OPTIONS: status 200
+[2025-12-02 21:47:54] [INFO] api_scanner - Método GET: status 200
+[2025-12-02 21:47:55] [INFO] api_scanner - Método DELETE: status 405
+[2025-12-02 21:47:55] [INFO] api_scanner - ✅ Teste de métodos paralelo concluído: {'PUT': 405, 'POST': 405, 'OPTIONS': 200, 'GET': 200, 'DELETE': 405}
+[2025-12-02 21:47:55] [INFO] api_scanner - 📊 Resultado dos testes de métodos HTTP:
+[2025-12-02 21:47:55] [INFO] api_scanner -  - PUT: 405
+[2025-12-02 21:47:55] [INFO] api_scanner -  - POST: 405
+[2025-12-02 21:47:55] [INFO] api_scanner -  - OPTIONS: 200
+[2025-12-02 21:47:55] [INFO] api_scanner -  - GET: 200
+[2025-12-02 21:47:55] [INFO] api_scanner -  - DELETE: 405
+[2025-12-02 21:47:55] [INFO] api_scanner - 🌐 Testando CORS em https://httpbin.org
+[2025-12-02 21:47:55] [INFO] api_scanner - Resultado CORS: {'Access-Control-Allow-Origin': 'https://example.com', 'Access-Control-Allow-Credentials': 'true'}
+[2025-12-02 21:47:55] [INFO] api_scanner - Resultado CORS: {'Access-Control-Allow-Origin': 'https://example.com', 'Access-Control-Allow-Credentials': 'true'}
+[2025-12-02 21:47:55] [INFO] api_scanner - 🚦 Testando rate limit em https://httpbin.org com até 20 requisições
+[2025-12-02 21:47:56] [INFO] api_scanner - [1] Sucesso: 200
+[2025-12-02 21:47:58] [INFO] api_scanner - [2] Sucesso: 200
+[2025-12-02 21:48:00] [INFO] api_scanner - [3] Sucesso: 200
+[2025-12-02 21:48:00] [INFO] api_scanner - [4] Sucesso: 200
+[2025-12-02 21:48:02] [INFO] api_scanner - [5] Sucesso: 200
+[2025-12-02 21:48:04] [INFO] api_scanner - [6] Sucesso: 200
+[2025-12-02 21:48:07] [INFO] api_scanner - [7] Sucesso: 200
+[2025-12-02 21:48:08] [INFO] api_scanner - [8] Sucesso: 200
+[2025-12-02 21:48:09] [INFO] api_scanner - [9] Sucesso: 200
+[2025-12-02 21:48:10] [INFO] api_scanner - [10] Sucesso: 200
+[2025-12-02 21:48:11] [INFO] api_scanner - [11] Sucesso: 200
+[2025-12-02 21:48:12] [INFO] api_scanner - [12] Sucesso: 200
+[2025-12-02 21:48:13] [INFO] api_scanner - [13] Sucesso: 200
+[2025-12-02 21:48:14] [INFO] api_scanner - [14] Sucesso: 200
+[2025-12-02 21:48:15] [INFO] api_scanner - [15] Sucesso: 200
+[2025-12-02 21:48:15] [INFO] api_scanner - [16] Sucesso: 200
+[2025-12-02 21:48:18] [INFO] api_scanner - [17] Sucesso: 200
+[2025-12-02 21:48:18] [INFO] api_scanner - [18] Sucesso: 200
+[2025-12-02 21:48:19] [INFO] api_scanner - [19] Sucesso: 200
+[2025-12-02 21:48:20] [INFO] api_scanner - [20] Sucesso: 200
+[2025-12-02 21:48:20] [INFO] api_scanner - Resultado final rate limit: {'success': 20, 'status_429': 0, 'others': {}}
+[2025-12-02 21:48:20] [INFO] api_scanner - Resultado rate limit: {'success': 20, 'status_429': 0, 'others': {}}
+[2025-12-02 21:48:20] [INFO] api_scanner - ✅ Análise concluída com sucesso.

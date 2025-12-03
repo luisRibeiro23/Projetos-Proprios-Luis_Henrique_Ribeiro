@@ -1,25 +1,32 @@
+# scanner/cors.py
 import requests
-from rich.console import Console
+from utils.logging_config import setup_logger
 
-console = Console()
+logger = setup_logger()
 
-def test_cors(url):
-    console.print("\n[bold cyan]=== Teste de CORS ===[/]")
-
-    test_origin = "http://malicious-site.com"
-    headers = {"Origin": test_origin}
+def test_cors(url: str) -> dict:
+    """
+    Faz uma requisição com header Origin e verifica os headers CORS de resposta.
+    """
+    logger.info(f"🌐 Testando CORS em {url}")
 
     try:
-        r = requests.get(url, headers=headers, timeout=5)
-        acao = r.headers.get("Access-Control-Allow-Origin", "Nenhum")
+        resp = requests.get(
+            url,
+            headers={"Origin": "https://example.com"},
+            timeout=5
+        )
+    except requests.RequestException as e:
+        logger.error(f"Erro ao testar CORS em {url}: {e}")
+        return {"error": str(e)}
 
-        if acao == "*" or acao == test_origin:
-            console.print(f"[red]CORS vulnerável! Allow-Origin: {acao}[/]")
-        else:
-            console.print(f"[green]CORS seguro. Allow-Origin: {acao}[/]")
+    allow_origin = resp.headers.get("Access-Control-Allow-Origin")
+    allow_credentials = resp.headers.get("Access-Control-Allow-Credentials")
 
-        acc = r.headers.get("Access-Control-Allow-Credentials", "Nenhum")
-        console.print(f"[yellow]Allow-Credentials: {acc}[/]")
+    result = {
+        "Access-Control-Allow-Origin": allow_origin,
+        "Access-Control-Allow-Credentials": allow_credentials,
+    }
 
-    except Exception as e:
-        console.print(f"[red]Erro ao testar CORS: {e}[/]")
+    logger.info(f"Resultado CORS: {result}")
+    return result

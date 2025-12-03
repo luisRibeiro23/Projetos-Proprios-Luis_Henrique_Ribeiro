@@ -1,33 +1,53 @@
-from scanner.headers import scan_headers
-from scanner.methods import scan_methods
-from scanner.discovery import discover_endpoints
-from scanner.auth import test_auth
-from scanner.cors import test_cors
-from scanner.ratelimit import test_rate_limit
-
-from rich.console import Console
+# main.py
 import argparse
+from utils.logging_config import setup_logger
 
-console = Console()
+# Importa as funções dos módulos do scanner
+from scanner.methods import test_http_methods_parallel
+from scanner.headers import test_security_headers
+from scanner.cors import test_cors
+from scanner.ratelimit import test_rate_limit  # repara: arquivo é ratelimit.py
+
+logger = setup_logger()
 
 def main():
-    parser = argparse.ArgumentParser(description="API Security Scanner – v2.0")
-    parser.add_argument("--url", required=True)
-    parser.add_argument("--token", help="Token JWT opcional")
+    parser = argparse.ArgumentParser(description="API Security Scanner")
+    parser.add_argument(
+        "--url",
+        required=True,
+        help="URL base da API para análise"
+    )
     args = parser.parse_args()
+    url = args.url
 
-    console.print("[bold magenta]Iniciando análise...[/]")
+    logger.info("🚀 Iniciando análise da API")
+    logger.info(f"Alvo: {url}")
 
-    scan_headers(args.url)
-    scan_methods(args.url)
-    discover_endpoints(args.url)
-    test_cors(args.url)
-    test_rate_limit(args.url)
+    methods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 
-    if args.token:
-        test_auth(args.url, args.token)
+    try:
+        # 1) Headers de segurança
+        headers_result = test_security_headers(url)
+        logger.info(f"Resultado headers: {headers_result}")
 
-    console.print("\n[bold green]Finalizado![/]")
+        # 2) Métodos HTTP (em paralelo)
+        methods_result = test_http_methods_parallel(url, methods)
+        logger.info("📊 Resultado dos testes de métodos HTTP:")
+        for m, status in methods_result.items():
+            logger.info(f" - {m}: {status}")
+
+        # 3) CORS
+        cors_result = test_cors(url)
+        logger.info(f"Resultado CORS: {cors_result}")
+
+        # 4) Rate limit
+        rate_limit_result = test_rate_limit(url)
+        logger.info(f"Resultado rate limit: {rate_limit_result}")
+
+        logger.info("✅ Análise concluída com sucesso.")
+
+    except Exception as e:
+        logger.exception(f"❌ Erro inesperado durante a análise: {e}")
 
 if __name__ == "__main__":
     main()

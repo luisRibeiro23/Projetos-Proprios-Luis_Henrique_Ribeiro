@@ -1,7 +1,8 @@
+# scanner/headers.py
 import requests
-from rich.console import Console
+from utils.logging_config import setup_logger
 
-console = Console()
+logger = setup_logger()
 
 SECURITY_HEADERS = [
     "Content-Security-Policy",
@@ -11,22 +12,26 @@ SECURITY_HEADERS = [
     "Referrer-Policy",
 ]
 
-def scan_headers(url):
-    console.print("\n[bold cyan]=== Teste de Headers de Segurança ===[/]")
+def test_security_headers(url: str) -> dict:
+    """
+    Faz uma requisição GET e verifica a presença dos principais headers de segurança.
+    Retorna um dict: {header: True/False, ...}
+    """
+    logger.info(f"🛡️ Testando headers de segurança em {url}")
 
     try:
-        r = requests.get(url, timeout=5)
-    except Exception as e:
-        console.print(f"[red]Erro ao acessar {url}: {e}[/]")
-        return
+        resp = requests.get(url, timeout=5)
+    except requests.RequestException as e:
+        logger.error(f"Erro ao testar headers em {url}: {e}")
+        return {"error": str(e)}
 
-    for header in SECURITY_HEADERS:
-        if header in r.headers:
-            console.print(f"[green]✔ {header} presente[/]")
+    results = {}
+    for h in SECURITY_HEADERS:
+        present = h in resp.headers
+        results[h] = present
+        if present:
+            logger.info(f"Header presente: {h}")
         else:
-            console.print(f"[red]✘ {header} ausente[/]")
+            logger.warning(f"Header AUSENTE: {h}")
 
-    console.print("[yellow]Headers coletados:[/]")
-    for k, v in r.headers.items():
-        console.print(f" [white]{k}[/]: {v}")
-
+    return results
