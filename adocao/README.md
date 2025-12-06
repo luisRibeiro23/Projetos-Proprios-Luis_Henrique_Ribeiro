@@ -7,6 +7,13 @@ Este projeto corresponde à implementação das **Partes A e C** do módulo de B
 
 ---
 
+## Endpoints consumidos pelo frontend
+
+- GET /animals
+- GET /animals/{id}
+- POST /adoption-requests
+
+
 ## 🚀 Tecnologias Utilizadas
 
 - Python 3.11
@@ -54,3 +61,4 @@ source venv/bin/activate
 pip install -r requirements.txt
 http://127.0.0.1:8000
 http://127.0.0.1:8000/docs
+
