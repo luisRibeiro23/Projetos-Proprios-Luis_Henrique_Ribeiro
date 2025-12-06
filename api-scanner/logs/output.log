@@ -63,3 +63,131 @@
 [2025-12-02 21:48:20] [INFO] api_scanner - Resultado final rate limit: {'success': 20, 'status_429': 0, 'others': {}}
 [2025-12-02 21:48:20] [INFO] api_scanner - Resultado rate limit: {'success': 20, 'status_429': 0, 'others': {}}
 [2025-12-02 21:48:20] [INFO] api_scanner - ✅ Análise concluída com sucesso.
+[2025-12-02 23:21:31] [INFO] api_scanner - 🚀 Iniciando análise da API
+[2025-12-02 23:21:31] [INFO] api_scanner - Alvo: https://httpbin.org/redirect-to
+[2025-12-02 23:21:31] [INFO] api_scanner - 🛡️ Testando headers de segurança em https://httpbin.org/redirect-to
+[2025-12-02 23:21:31] [WARNING] api_scanner - Header AUSENTE: Content-Security-Policy
+[2025-12-02 23:21:31] [WARNING] api_scanner - Header AUSENTE: Strict-Transport-Security
+[2025-12-02 23:21:31] [WARNING] api_scanner - Header AUSENTE: X-Frame-Options
+[2025-12-02 23:21:31] [WARNING] api_scanner - Header AUSENTE: X-Content-Type-Options
+[2025-12-02 23:21:31] [WARNING] api_scanner - Header AUSENTE: Referrer-Policy
+[2025-12-02 23:21:31] [INFO] api_scanner - Resultado headers: {'Content-Security-Policy': False, 'Strict-Transport-Security': False, 'X-Frame-Options': False, 'X-Content-Type-Options': False, 'Referrer-Policy': False}
+[2025-12-02 23:21:31] [INFO] api_scanner - 🔁 Iniciando teste de métodos em paralelo para https://httpbin.org/redirect-to
+[2025-12-02 23:21:32] [INFO] api_scanner - Método OPTIONS: status 200
+[2025-12-02 23:21:32] [INFO] api_scanner - Método GET: status 500
+[2025-12-02 23:21:33] [INFO] api_scanner - Método PUT: status 500
+[2025-12-02 23:21:34] [INFO] api_scanner - Método POST: status 500
+[2025-12-02 23:21:35] [INFO] api_scanner - Método DELETE: status 500
+[2025-12-02 23:21:35] [INFO] api_scanner - ✅ Teste de métodos paralelo concluído: {'OPTIONS': 200, 'GET': 500, 'PUT': 500, 'POST': 500, 'DELETE': 500}
+[2025-12-02 23:21:35] [INFO] api_scanner - 📊 Resultado dos testes de métodos HTTP:
+[2025-12-02 23:21:35] [INFO] api_scanner -  - OPTIONS: 200
+[2025-12-02 23:21:35] [INFO] api_scanner -  - GET: 500
+[2025-12-02 23:21:35] [INFO] api_scanner -  - PUT: 500
+[2025-12-02 23:21:35] [INFO] api_scanner -  - POST: 500
+[2025-12-02 23:21:35] [INFO] api_scanner -  - DELETE: 500
+[2025-12-02 23:21:35] [INFO] api_scanner - 🌐 Testando CORS em https://httpbin.org/redirect-to
+[2025-12-02 23:21:36] [INFO] api_scanner - Resultado CORS: {'Access-Control-Allow-Origin': None, 'Access-Control-Allow-Credentials': None}
+[2025-12-02 23:21:36] [INFO] api_scanner - Resultado CORS: {'Access-Control-Allow-Origin': None, 'Access-Control-Allow-Credentials': None}
+[2025-12-02 23:21:36] [INFO] api_scanner - 🧨 Iniciando testes de XSS em https://httpbin.org/redirect-to param=q com 4 payloads
+[2025-12-02 23:21:36] [INFO] api_scanner - [XSS] Testando payload em https://httpbin.org/redirect-to param=q
+[2025-12-02 23:21:36] [INFO] api_scanner - [XSS] Testando payload em https://httpbin.org/redirect-to param=q
+[2025-12-02 23:21:36] [INFO] api_scanner - [XSS] Testando payload em https://httpbin.org/redirect-to param=q
+[2025-12-02 23:21:36] [INFO] api_scanner - [XSS] Testando payload em https://httpbin.org/redirect-to param=q
+[2025-12-02 23:21:37] [INFO] api_scanner - [XSS] Payload não refletido em https://httpbin.org/redirect-to (q)
+[2025-12-02 23:21:37] [INFO] api_scanner - [XSS] Payload não refletido em https://httpbin.org/redirect-to (q)
+[2025-12-02 23:21:38] [INFO] api_scanner - [XSS] Payload não refletido em https://httpbin.org/redirect-to (q)
+[2025-12-02 23:21:39] [INFO] api_scanner - [XSS] Payload não refletido em https://httpbin.org/redirect-to (q)
+[2025-12-02 23:21:39] [INFO] api_scanner - ✅ Resultado final XSS: nenhum payload refletido em https://httpbin.org/redirect-to
+[2025-12-02 23:21:39] [INFO] api_scanner - Resultado XSS: vulnerável=False
+[2025-12-02 23:21:39] [INFO] api_scanner - 💉 Iniciando testes de SQLi em https://httpbin.org/redirect-to param=id com 7 payloads
+[2025-12-02 23:21:39] [INFO] api_scanner - [SQLi] Testando payload em https://httpbin.org/redirect-to param=id
+[2025-12-02 23:21:39] [INFO] api_scanner - [SQLi] Testando payload em https://httpbin.org/redirect-to param=id
+[2025-12-02 23:21:39] [INFO] api_scanner - [SQLi] Testando payload em https://httpbin.org/redirect-to param=id
+[2025-12-02 23:21:39] [INFO] api_scanner - [SQLi] Testando payload em https://httpbin.org/redirect-to param=id
+[2025-12-02 23:21:39] [INFO] api_scanner - [SQLi] Testando payload em https://httpbin.org/redirect-to param=id
+[2025-12-02 23:21:39] [WARNING] api_scanner - [SQLi] POSSÍVEL vulnerabilidade em https://httpbin.org/redirect-to (id) status=500, erros=[]
+[2025-12-02 23:21:39] [INFO] api_scanner - [SQLi] Testando payload em https://httpbin.org/redirect-to param=id
+[2025-12-02 23:21:39] [WARNING] api_scanner - [SQLi] POSSÍVEL vulnerabilidade em https://httpbin.org/redirect-to (id) status=500, erros=[]
+[2025-12-02 23:21:39] [INFO] api_scanner - [SQLi] Testando payload em https://httpbin.org/redirect-to param=id
+[2025-12-02 23:21:40] [WARNING] api_scanner - [SQLi] POSSÍVEL vulnerabilidade em https://httpbin.org/redirect-to (id) status=500, erros=[]
+[2025-12-02 23:21:40] [WARNING] api_scanner - [SQLi] POSSÍVEL vulnerabilidade em https://httpbin.org/redirect-to (id) status=500, erros=[]
+[2025-12-02 23:21:40] [WARNING] api_scanner - [SQLi] POSSÍVEL vulnerabilidade em https://httpbin.org/redirect-to (id) status=500, erros=[]
+[2025-12-02 23:21:41] [WARNING] api_scanner - [SQLi] POSSÍVEL vulnerabilidade em https://httpbin.org/redirect-to (id) status=500, erros=[]
+[2025-12-02 23:21:41] [WARNING] api_scanner - [SQLi] POSSÍVEL vulnerabilidade em https://httpbin.org/redirect-to (id) status=500, erros=[]
+[2025-12-02 23:21:41] [WARNING] api_scanner - 💉 Resultado final SQLi: POSSÍVEL vulnerabilidade em https://httpbin.org/redirect-to
+[2025-12-02 23:21:41] [INFO] api_scanner - Resultado SQLi: vulnerável=True
+[2025-12-02 23:21:41] [INFO] api_scanner - 🔁 Iniciando testes de Open Redirect em https://httpbin.org/redirect-to com 8 parâmetros e 3 payloads
+[2025-12-02 23:21:41] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com next=https://evil.com
+[2025-12-02 23:21:41] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com next=https://attacker.example
+[2025-12-02 23:21:41] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com next=//evil.com
+[2025-12-02 23:21:41] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com redirect=https://evil.com
+[2025-12-02 23:21:41] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com redirect=https://attacker.example
+[2025-12-02 23:21:42] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=redirect, status=500, Location=None
+[2025-12-02 23:21:42] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com redirect=//evil.com
+[2025-12-02 23:21:42] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=redirect, status=500, Location=None
+[2025-12-02 23:21:42] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com redirect_url=https://evil.com
+[2025-12-02 23:21:43] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=next, status=500, Location=None
+[2025-12-02 23:21:43] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com redirect_url=https://attacker.example
+[2025-12-02 23:21:43] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=next, status=500, Location=None
+[2025-12-02 23:21:43] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com redirect_url=//evil.com
+[2025-12-02 23:21:43] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=next, status=500, Location=None
+[2025-12-02 23:21:43] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com url=https://evil.com
+[2025-12-02 23:21:44] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=redirect_url, status=500, Location=None
+[2025-12-02 23:21:44] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com url=https://attacker.example
+[2025-12-02 23:21:44] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=redirect_url, status=500, Location=None
+[2025-12-02 23:21:44] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com url=//evil.com
+[2025-12-02 23:21:44] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=redirect_url, status=500, Location=None
+[2025-12-02 23:21:44] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com dest=https://evil.com
+[2025-12-02 23:21:44] [WARNING] api_scanner - [Redirect] POSSÍVEL Open Redirect em https://httpbin.org/redirect-to param=url -> https://attacker.example (status=302)
+[2025-12-02 23:21:44] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com dest=https://attacker.example
+[2025-12-02 23:21:44] [WARNING] api_scanner - [Redirect] POSSÍVEL Open Redirect em https://httpbin.org/redirect-to param=url -> https://evil.com (status=302)
+[2025-12-02 23:21:44] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com dest=//evil.com
+[2025-12-02 23:21:45] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=redirect, status=500, Location=None
+[2025-12-02 23:21:45] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com destination=https://evil.com
+[2025-12-02 23:21:45] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=dest, status=500, Location=None
+[2025-12-02 23:21:45] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com destination=https://attacker.example
+[2025-12-02 23:21:45] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=dest, status=500, Location=None
+[2025-12-02 23:21:45] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com destination=//evil.com
+[2025-12-02 23:21:45] [WARNING] api_scanner - [Redirect] POSSÍVEL Open Redirect em https://httpbin.org/redirect-to param=url -> //evil.com (status=302)
+[2025-12-02 23:21:45] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com continue=https://evil.com
+[2025-12-02 23:21:45] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=dest, status=500, Location=None
+[2025-12-02 23:21:45] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com continue=https://attacker.example
+[2025-12-02 23:21:46] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=destination, status=500, Location=None
+[2025-12-02 23:21:46] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com continue=//evil.com
+[2025-12-02 23:21:46] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=destination, status=500, Location=None
+[2025-12-02 23:21:46] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com returnTo=https://evil.com
+[2025-12-02 23:21:46] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=destination, status=500, Location=None
+[2025-12-02 23:21:46] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com returnTo=https://attacker.example
+[2025-12-02 23:21:46] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=continue, status=500, Location=None
+[2025-12-02 23:21:46] [INFO] api_scanner - [Redirect] Testando https://httpbin.org/redirect-to com returnTo=//evil.com
+[2025-12-02 23:21:46] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=continue, status=500, Location=None
+[2025-12-02 23:21:46] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=returnTo, status=500, Location=None
+[2025-12-02 23:21:46] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=returnTo, status=500, Location=None
+[2025-12-02 23:21:47] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=continue, status=500, Location=None
+[2025-12-02 23:21:48] [INFO] api_scanner - [Redirect] Nenhum Open Redirect claro em https://httpbin.org/redirect-to param=returnTo, status=500, Location=None
+[2025-12-02 23:21:48] [WARNING] api_scanner - 🔓 Resultado final Open Redirect: POSSÍVEL vulnerabilidade em https://httpbin.org/redirect-to
+[2025-12-02 23:21:48] [INFO] api_scanner - Resultado Open Redirect: vulnerável=True
+[2025-12-02 23:21:48] [INFO] api_scanner - 🚦 Testando rate limit em https://httpbin.org/redirect-to com até 20 requisições
+[2025-12-02 23:21:49] [INFO] api_scanner - [1] Status inesperado: 500
+[2025-12-02 23:21:50] [INFO] api_scanner - [2] Status inesperado: 500
+[2025-12-02 23:21:51] [INFO] api_scanner - [3] Status inesperado: 500
+[2025-12-02 23:21:51] [INFO] api_scanner - [4] Status inesperado: 500
+[2025-12-02 23:21:53] [INFO] api_scanner - [5] Status inesperado: 500
+[2025-12-02 23:21:54] [INFO] api_scanner - [6] Status inesperado: 500
+[2025-12-02 23:21:56] [INFO] api_scanner - [7] Status inesperado: 500
+[2025-12-02 23:21:58] [INFO] api_scanner - [8] Status inesperado: 500
+[2025-12-02 23:21:58] [INFO] api_scanner - [9] Status inesperado: 500
+[2025-12-02 23:22:01] [INFO] api_scanner - [10] Status inesperado: 500
+[2025-12-02 23:22:01] [INFO] api_scanner - [11] Status inesperado: 500
+[2025-12-02 23:22:03] [INFO] api_scanner - [12] Status inesperado: 500
+[2025-12-02 23:22:05] [INFO] api_scanner - [13] Status inesperado: 500
+[2025-12-02 23:22:08] [INFO] api_scanner - [14] Status inesperado: 500
+[2025-12-02 23:22:08] [INFO] api_scanner - [15] Status inesperado: 500
+[2025-12-02 23:22:10] [INFO] api_scanner - [16] Status inesperado: 500
+[2025-12-02 23:22:11] [INFO] api_scanner - [17] Status inesperado: 500
+[2025-12-02 23:22:12] [INFO] api_scanner - [18] Status inesperado: 500
+[2025-12-02 23:22:14] [INFO] api_scanner - [19] Status inesperado: 500
+[2025-12-02 23:22:14] [INFO] api_scanner - [20] Status inesperado: 500
+[2025-12-02 23:22:14] [INFO] api_scanner - Resultado final rate limit: {'success': 0, 'status_429': 0, 'others': {500: 20}}
+[2025-12-02 23:22:14] [INFO] api_scanner - Resultado rate limit: {'success': 0, 'status_429': 0, 'others': {500: 20}}
+[2025-12-02 23:22:14] [INFO] api_scanner - ✅ Análise concluída com sucesso.
