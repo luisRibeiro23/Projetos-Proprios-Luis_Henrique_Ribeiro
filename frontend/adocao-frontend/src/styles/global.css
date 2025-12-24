@@ -699,3 +699,16 @@ body::before{
 .carousel-dots .dot.active{
   background:rgba(255,255,255,.95);
 }
+
+.clickable {
+  cursor: pointer;
+}
+
+.animalNameLink {
+  cursor: pointer;
+  color: #2f3bd6;
+}
+
+.animalNameLink:hover {
+  text-decoration: underline;
+}

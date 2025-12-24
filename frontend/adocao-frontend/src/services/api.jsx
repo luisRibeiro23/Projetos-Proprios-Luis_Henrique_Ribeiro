@@ -1,8 +1,11 @@
 // api.jsx
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+const IS_PROD = location.hostname.endsWith("netlify.app") && !import.meta.env.VITE_API_URL;
 
 export async function api(path, options = {}) {
-  const token = localStorage.getItem("token");
+  if (IS_PROD) {
+    throw new Error("Backend não publicado. Este deploy é apenas uma demo do frontend.");
+  }  const token = localStorage.getItem("token");
 
   const headers = new Headers(options.headers || {});
   if (token) headers.set("Authorization", `Bearer ${token}`);

@@ -3,7 +3,8 @@ import { api } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import SwipeDeck from "../components/SwipeDeck";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+
 
 function safeJsonParse(str) {
   if (!str) return null;

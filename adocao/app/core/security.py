@@ -5,6 +5,11 @@ from passlib.context import CryptContext
 
 from .config import settings
 
+import os
+
+SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
+
+
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 
