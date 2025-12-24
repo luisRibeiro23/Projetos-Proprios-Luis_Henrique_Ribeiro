@@ -70,6 +70,10 @@ def health():
 # - No Render, Root Directory deve ser "adocao"
 # - A pasta "static/" deve estar dentro de "adocao/"
 
+@app.get("/")
+def root():
+    return {"ok": True, "service": "adocao-api", "version": "cors-v2"}
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # =====================================================
