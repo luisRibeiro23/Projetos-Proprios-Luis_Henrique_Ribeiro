@@ -1,0 +1,51 @@
+html, body, #root {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Tipografia base (mobile-first) */
+h1 {
+  font-size: 1.8rem;
+  line-height: 1.2;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  h1 {
+    font-size: 2.4rem;
+  }
+}
+
+/* Home: grid responsivo (mobile-first) */
+.animals-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* mobile */
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .animals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .animals-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

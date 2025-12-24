@@ -1,154 +1,205 @@
-from datetime import datetime
 from enum import Enum
-from typing import Optional, List
-
-from pydantic import BaseModel, EmailStr
-from pydantic import ConfigDict
+from typing import Optional
+from pydantic import BaseModel, EmailStr, ConfigDict, field_validator
 
 
-# ==== ENUMS ==== #
-
+# =========================
+# Enums
+# =========================
 class UserRole(str, Enum):
     ADOTANTE = "ADOTANTE"
     ONG = "ONG"
-
-
-class Species(str, Enum):
-    CAO = "CAO"
-    GATO = "GATO"
-    OUTRO = "OUTRO"
-
-
-class Size(str, Enum):
-    PEQUENO = "PEQUENO"
-    MEDIO = "MEDIO"
-    GRANDE = "GRANDE"
-
-
-class Sex(str, Enum):
-    MACHO = "MACHO"
-    FEMEA = "FEMEA"
-
-
-class AnimalStatus(str, Enum):
-    DISPONIVEL = "DISPONIVEL"
-    EM_ANALISE = "EM_ANALISE"
-    ADOTADO = "ADOTADO"
+    DOADOR = "DOADOR"
 
 
 class AdoptionStatus(str, Enum):
     PENDENTE = "PENDENTE"
     APROVADO = "APROVADO"
-    RECUSADO = "RECUSADO"
+    RECUSADO = "RECUSADO"  # ✅ mantenha assim (e ajuste o front p/ usar RECUSADO)
 
 
-# ==== USERS ==== #
-
+# =========================
+# Auth / Users
+# =========================
 class UserBase(BaseModel):
     name: str
     email: EmailStr
-    role: UserRole = UserRole.ADOTANTE
-    city: Optional[str] = None
-    state: Optional[str] = None
+    role: UserRole
 
 
 class UserCreate(UserBase):
     password: str
 
 
-class UserRead(UserBase):
-    id: int
-    created_at: datetime
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-# ==== ANIMALS ==== #
-
-class AnimalBase(BaseModel):
-    name: str
-    # se quiser aproveitar os enums, pode trocar para: species: Species
-    species: str
-    # e aqui: size: Size
-    size: str
-    age: str
-    description: Optional[str] = None
-    city: str
-    state: str
-    available: bool = True
-
-
-class AnimalCreate(AnimalBase):
-    """Campos necessários para criar animal"""
-    pass
-
-
-class Animal(BaseModel):
-    # se você estiver usando isso em algum lugar:
-    id: int
-    # herdar do AnimalBase também é ok, mas não é obrigatório
-    name: str
-    species: str
-    size: str
-    age: str
-    description: Optional[str] = None
-    city: str
-    state: str
-    available: bool = True
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-class AnimalRead(AnimalBase):
-    id: int
-    created_at: datetime
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-# ==== ADOPTION REQUESTS ==== #
-
-class AdoptionRequestBase(BaseModel):
-    message: Optional[str] = None
-
-
-class AdoptionRequestCreate(AdoptionRequestBase):
-    # user_id NÃO vem do body, vamos pegar do usuário logado
-    user_id: int
-    animal_id: int
-
-
-class AdoptionRequestUpdateStatus(BaseModel):
-    status: AdoptionStatus
-
-
-class AdoptionRequestRead(AdoptionRequestBase):
-    id: int
-    animal_id: int
-    user_id: int
-    status: AdoptionStatus   
-    created_at: datetime
-
-    model_config = ConfigDict(from_attributes=True)
-
-
-# ==== LIST WRAPPERS (opcionais) ==== #
-
-class AnimalsList(BaseModel):
-    items: List[AnimalRead]
-
-
-class AdoptionRequestsList(BaseModel):
-    items: List[AdoptionRequestRead]
-
-
-# ==== AUTH ==== #
-
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
 
+class UserRead(UserBase):
+    id: int
+    model_config = ConfigDict(from_attributes=True)
+
+
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+
+# =========================
+# Animals
+# =========================
+class AnimalBase(BaseModel):
+    name: str
+    species: str
+
+    # age como string porque no teu DB tem valores tipo "2 meses", "3 anos"
+    age: Optional[str] = None
+
+    city: str
+    state: str
+    description: Optional[str] = None
+
+    # ✅ No seu models.py: size é nullable=False, então aqui deve ser obrigatório
+    size: str
+
+    available: Optional[bool] = True
+
+    # ✅ NOVO: URL da imagem principal do animal
+    image_url: Optional[str] = None
+
+
+def _age_is_negative(age_str: str) -> bool:
+    """
+    Regras simples:
+    - se começar com número, valida se é negativo
+    - exemplos aceitos: "2", "2 anos", "2 meses", "0.5 anos"
+    - se não começar com número, não valida (deixa passar como texto)
+    """
+    s = age_str.strip().lower()
+    if not s:
+        return False
+
+    token = ""
+    for ch in s:
+        if ch.isdigit() or ch in "-.":
+            token += ch
+        else:
+            break
+
+    if token in ("", "-", ".", "-."):
+        return False
+
+    try:
+        return float(token) < 0
+    except Exception:
+        return False
+
+
+class AnimalCreate(AnimalBase):
+    @field_validator("age")
+    @classmethod
+    def age_non_negative(cls, v):
+        if v is None:
+            return v
+        if _age_is_negative(v):
+            raise ValueError("Idade não pode ser negativa")
+        return v
+
+    @field_validator("state")
+    @classmethod
+    def state_two_letters(cls, v):
+        v = v.strip().upper()
+        if len(v) != 2:
+            raise ValueError("UF deve ter 2 letras (ex: AM)")
+        return v
+
+
+class AnimalUpdate(BaseModel):
+    name: Optional[str] = None
+    species: Optional[str] = None
+    age: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    description: Optional[str] = None
+    size: Optional[str] = None
+    available: Optional[bool] = None
+
+    # ✅ permitir atualizar foto também (ex: quando editar animal)
+    image_url: Optional[str] = None
+
+    @field_validator("age")
+    @classmethod
+    def age_non_negative(cls, v):
+        if v is None:
+            return v
+        if _age_is_negative(v):
+            raise ValueError("Idade não pode ser negativa")
+        return v
+
+    @field_validator("state")
+    @classmethod
+    def state_two_letters(cls, v):
+        if v is None:
+            return v
+        v = v.strip().upper()
+        if len(v) != 2:
+            raise ValueError("UF deve ter 2 letras (ex: AM)")
+        return v
+
+
+class AnimalPhotoRead(BaseModel):
+    id: int
+    url: str
+    position: int
+    class Config:
+        from_atributes = True
+
+class AnimalRead(AnimalBase):
+    id: int
+    owner_id: Optional[int] = None
+    likes_count: int = 0
+    superlikes_count: int = 0
+    image_url: Optional[str] = None  
+    photos: list[AnimalPhotoRead] = []
+    class Config:
+        from_atributes = True
+
+
+
+# =========================
+# Adoption Requests
+# =========================
+class AdoptionRequestCreate(BaseModel):
+    animal_id: int
+    message: Optional[str] = None
+
+
+class AdoptionRequestStatusUpdate(BaseModel):
+    status: AdoptionStatus
+
+
+class AdoptionRequestRead(BaseModel):
+    id: int
+    animal_id: int
+    user_id: int
+    status: AdoptionStatus
+    message: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+class ReactionKind(str, Enum):
+    LIKE = "LIKE"
+    DISLIKE = "DISLIKE"
+    SUPERLIKE = "SUPERLIKE"
+
+class ReactionCreate(BaseModel):
+    animal_id: int
+    kind: ReactionKind
+
+class ReactionRead(BaseModel):
+    id: int
+    animal_id: int
+    user_id: int
+    kind: ReactionKind
+    model_config = ConfigDict(from_attributes=True)

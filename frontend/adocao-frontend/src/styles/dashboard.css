@@ -1,0 +1,105 @@
+/* ===== Layout base ===== */
+
+.page-container {
+  padding: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.page-subtitle {
+  margin-top: 6px;
+  color: #555;
+}
+
+/* ===== Botões ===== */
+
+.btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #d6d6df;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: #5b67f4;
+  border-color: #5b67f4;
+  color: #fff;
+}
+
+.btn-danger {
+  background: #e74c3c;
+  border-color: #e74c3c;
+  color: #fff;
+}
+
+.btn-success {
+  background: #2ecc71;
+  border-color: #2ecc71;
+  color: #fff;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ===== Cards ===== */
+
+.card {
+  border: 1px solid #e2e2ea;
+  border-radius: 14px;
+  padding: 14px;
+  background: #06065c;
+}
+
+.card + .card {
+  margin-top: 12px;
+}
+
+/* ===== Status ===== */
+
+.status-available {
+  color: #2ecc71;
+  font-weight: 700;
+}
+
+.status-unavailable {
+  color: #e74c3c;
+  font-weight: 700;
+}
+
+.status-pending {
+  color: #e67e22;
+  font-weight: 700;
+}
+
+/* ===== Separadores ===== */
+
+.divider {
+  margin: 18px 0;
+  border: none;
+  border-top: 1px solid #eee;
+}
+.card-muted {
+  background: #fafafa;
+  border-color: #ededf5;
+}
+
+.card-muted b {
+  color: #333;
+}

@@ -1,0 +1,351 @@
+:root {
+  --bg: #0b1220;
+  --card: #121b2f;
+  --text: #e9eefc;
+  --muted: #a9b4d0;
+  --border: rgba(255,255,255,0.10);
+
+  --primary: #4f7cff;
+  --danger: #ff4d4d;
+  --success: #23c483;
+  --warning: #ffb020;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(1200px 700px at 20% 10%, rgba(79,124,255,0.25), transparent 60%),
+              radial-gradient(1000px 600px at 80% 0%, rgba(35,196,131,0.18), transparent 60%),
+              var(--bg);
+  color: var(--text);
+}
+
+a { color: inherit; }
+hr { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 22px 16px;
+}
+
+/* ✅ MOBILE-FIRST: header quebra em coluna no celular */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.card {
+  background: rgba(18,27,47,0.9);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.stack { display: grid; gap: 12px; }
+
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+/* ✅ MOBILE-FIRST: row empilha no celular (evita esmagar badge/texto/botões) */
+@media (max-width: 640px) {
+  .row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.muted { color: var(--muted); }
+
+.btn {
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform .05s ease, background .2s ease;
+}
+.btn:hover { background: rgba(255,255,255,0.10); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ✅ MOBILE-FIRST: botões ocupam largura total */
+.btn,
+button {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .btn,
+  button {
+    width: auto;
+  }
+}
+
+/* ✅ Evita conflito do estilo global do Vite em button */
+button:not(.btn) {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+}
+
+.btn.primary { background: rgba(79,124,255,0.25); border-color: rgba(79,124,255,0.35); }
+.btn.primary:hover { background: rgba(79,124,255,0.35); }
+
+.btn.danger { background: rgba(255,77,77,0.20); border-color: rgba(255,77,77,0.35); }
+.btn.danger:hover { background: rgba(255,77,77,0.30); }
+
+.btn.success { background: rgba(35,196,131,0.18); border-color: rgba(35,196,131,0.35); }
+.btn.success:hover { background: rgba(35,196,131,0.28); }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text);
+  background: rgba(255,255,255,0.06);
+}
+
+.badge.success { border-color: rgba(35,196,131,0.35); background: rgba(35,196,131,0.18); }
+.badge.danger  { border-color: rgba(255,77,77,0.35); background: rgba(255,77,77,0.18); }
+.badge.warn    { border-color: rgba(255,176,32,0.40); background: rgba(255,176,32,0.18); }
+
+.sectionTitle {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: .2px;
+}
+
+.hint {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.authShell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+
+.authCard {
+  width: 100%;
+  max-width: 440px;
+  padding: 18px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  outline: none;
+}
+.input:focus {
+  border-color: rgba(79,124,255,0.55);
+  box-shadow: 0 0 0 4px rgba(79,124,255,0.15);
+}
+
+.label {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.formGrid {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.smallLink {
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.brandTitle {
+  font-size: 22px;
+  margin: 0;
+}
+
+.brandSub {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+/* ===== DASHBOARD LAYOUTS (consistência visual) ===== */
+
+.pageTitle {
+  margin: 0;
+  font-size: 22px;
+}
+.pageSub {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* cards-resumo (ex: total animais, pendentes, aprovadas) */
+.statsGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr; /* mobile */
+}
+
+@media (min-width: 640px) {
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .statsGrid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* lista de itens (cards empilhados) */
+.list {
+  display: grid;
+  gap: 12px;
+}
+
+/* “linha” dentro do card, com partes que quebram bem no mobile */
+.itemTop {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+@media (max-width: 640px) {
+  .itemTop {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* bloco de ações (botões) */
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+@media (max-width: 640px) {
+  .actions {
+    flex-direction: column;
+    justify-content: stretch;
+  }
+  .actions .btn {
+    width: 100%;
+  }
+}
+
+/* estados visuais (já adiantando prioridade 4 sem risco) */
+.card.dim {
+  opacity: 0.65;
+}
+
+.kv {
+  display: grid;
+  gap: 4px;
+}
+.kv strong {
+  font-size: 14px;
+}
+.kv span {
+  font-size: 13px;
+  color: var(--muted);
+}
+/* ===== Estados visuais (cards) ===== */
+.card.successOutline {
+  border-color: rgba(35,196,131,0.35);
+}
+
+.card.warnOutline {
+  border-color: rgba(255,176,32,0.40);
+}
+
+.card.dangerOutline {
+  border-color: rgba(255,77,77,0.35);
+}
+/* ===== Estados visuais (feedback passivo) ===== */
+.card.successOutline {
+  border-color: rgba(35, 196, 131, 0.35);
+}
+
+.card.warnOutline {
+  border-color: rgba(255, 176, 32, 0.40);
+}
+
+.card.dangerOutline {
+  border-color: rgba(255, 77, 77, 0.35);
+}
+/* ===== Botões: microinterações ===== */
+
+.btn {
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transform: translateZ(0); /* melhora fluidez no mobile */
+  transition: transform 0.06s ease, background 0.18s ease, border-color 0.18s ease, opacity 0.18s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0px) scale(0.99);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(79,124,255,0.18);
+  border-color: rgba(79,124,255,0.55);
+}
+
+/* estado disabled mais claro */
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* variantes com hover mais consistente */
+.btn.primary:hover { background: rgba(79,124,255,0.40); }
+.btn.danger:hover  { background: rgba(255,77,77,0.30); }
+.btn.success:hover { background: rgba(35,196,131,0.30); }
+
+/* ===== Compatibilidade: classes antigas (Home etc.) ===== */
+/* Se você ainda usa btn-primary/btn-danger em algum lugar */
+.btn.btn-primary { background: rgba(79,124,255,0.25); border-color: rgba(79,124,255,0.35); }
+.btn.btn-primary:hover { background: rgba(79,124,255,0.40); }
+
+.btn.btn-danger { background: rgba(255,77,77,0.20); border-color: rgba(255,77,77,0.35); }
+.btn.btn-danger:hover { background: rgba(255,77,77,0.30); }
+
+.btn.btn-success { background: rgba(35,196,131,0.18); border-color: rgba(35,196,131,0.35); }
+.btn.btn-success:hover { background: rgba(35,196,131,0.30); }

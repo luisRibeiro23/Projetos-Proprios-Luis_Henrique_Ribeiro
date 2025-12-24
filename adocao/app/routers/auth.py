@@ -3,10 +3,11 @@ from sqlalchemy.orm import Session
 
 from .. import models, schemas
 from ..deps import get_db
+from ..deps import get_current_user
 from ..core.security import (
     get_password_hash,
     verify_password,
-    create_acess_token,
+    create_access_token,  # 👈 confere se o nome é esse MESMO no security.py
 )
 
 router = APIRouter(
@@ -15,43 +16,30 @@ router = APIRouter(
 )
 
 
-@router.post(
-    "/register",
-    response_model=schemas.UserRead,
-    status_code=status.HTTP_201_CREATED,
-)
-def register_user(
-    user_in: schemas.UserCreate,
-    db: Session = Depends(get_db),
-):
-    # Verifica se já existe usuário com esse e-mail
-    existing = (
-        db.query(models.User)
-        .filter(models.User.email == user_in.email)
-        .first()
-    )
-    if existing:
+@router.post("/register", response_model=schemas.UserRead)
+def register_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    # Verifica se já existe usuário com esse email
+    existing_user = db.query(models.User).filter(models.User.email == user.email).first()
+    if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="E-mail já está em uso",
+            detail="E-mail já cadastrado",
         )
 
-    hashed_password = get_password_hash(user_in.password)
+    hashed_password = get_password_hash(user.password)
 
-    db_user = models.User(
-        name=user_in.name,
-        email=user_in.email,
+    new_user = models.User(
+        name=user.name,
+        email=user.email,
         hashed_password=hashed_password,
-        role=user_in.role,
-        city=user_in.city,
-        state=user_in.state,
+        role=user.role,
     )
 
-    db.add(db_user)
+    db.add(new_user)
     db.commit()
-    db.refresh(db_user)
+    db.refresh(new_user)
 
-    return db_user
+    return new_user
 
 @router.post(
     "/login",
@@ -59,7 +47,7 @@ def register_user(
 )
 def login(
     credentials: schemas.UserLogin,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     user = (
         db.query(models.User)
@@ -70,12 +58,27 @@ def login(
         credentials.password, user.hashed_password
     ):
         raise HTTPException(
-            staturs_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=status.HTTP_401_UNAUTHORIZED,  # 👈 aqui estava "staturs_code"
             detail="Credenciais inválidas",
         )
-    acess_token = create_acess_token({"sub": str(user.id)})
-    
+
+    access_token = create_access_token({"sub": str(user.id)})
+
     return {
-        "access_token": acess_token,
+        "access_token": access_token,
         "token_type": "bearer",
     }
+
+@router.get(
+    "/me",
+    response_model=schemas.UserRead,
+)
+def read_current_user(
+    current_user: models.User = Depends(get_current_user),
+):
+    """
+    Retorna os dados do usuário logado (a partir do token).
+    """
+    return current_user
+
+

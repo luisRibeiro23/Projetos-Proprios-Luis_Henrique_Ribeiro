@@ -1,138 +1,154 @@
-from typing import List, Optional
-
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
+from typing import Optional, List
 
-from .. import models, schemas
-from ..deps import get_db
+from ..db import SessionLocal
+from .. import models
+from .auth import get_current_user  # ajuste se seu import for diferente
 
-router = APIRouter(
-    prefix="/adoption-requests",
-    tags=["adoption-requests"],
-)
+router = APIRouter(prefix="/adoption-requests", tags=["Adoption Requests"])
 
-@router.post(
-    "",
-    response_model=schemas.AdoptionRequestRead,
-    status_code=status.HTTP_201_CREATED,
-)
-def create_adoption_request(
-    adoption_in: schemas.AdoptionRequestCreate,
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+class AdoptionRequestCreate(BaseModel):
+    animal_id: int
+    message: Optional[str] = None
+
+
+class AdoptionRequestUpdate(BaseModel):
+    status: str  # "APROVADO" | "REJEITADO" | "PENDENTE"
+
+
+class AdoptionRequestOut(BaseModel):
+    id: int
+    status: str
+    message: Optional[str] = None
+    user_id: int
+    animal_id: int
+
+    class Config:
+        from_attributes = True
+
+
+VALID_STATUS = {"PENDENTE", "APROVADO", "REJEITADO"}
+
+
+@router.post("", response_model=AdoptionRequestOut, status_code=status.HTTP_201_CREATED)
+def create_request(
+    payload: AdoptionRequestCreate,
     db: Session = Depends(get_db),
+    user=Depends(get_current_user),
 ):
-    """
-    Cria uma nova solicitação de adoção.
-    (Versão simples: recebe user_id no body.)
-    """
-    animal = db.query(models.Animal).filter(models.Animal.id == adoption_in.animal_id).first()
+    if user.role != "ADOTANTE":
+        raise HTTPException(status_code=403, detail="Apenas ADOTANTE pode solicitar adoção.")
+
+    animal = db.query(models.Animal).filter(models.Animal.id == payload.animal_id).first()
     if not animal:
-        raise HTTPException(status_code=404, detail="Animal não encontrado")
+        raise HTTPException(status_code=404, detail="Animal não encontrado.")
 
     if not animal.available:
-        raise HTTPException(status_code=400, detail="Animal não está disponível para adoção")
+        raise HTTPException(status_code=400, detail="Animal indisponível para adoção.")
 
-    user = db.query(models.User).filter(models.User.id == adoption_in.user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="Usuário não encontrado")
-
-    adoption_request = models.AdoptionRequest(
-        user_id=adoption_in.user_id,
-        animal_id=adoption_in.animal_id,
-        message=adoption_in.message,
-        # status usa o default PENDENTE do model
+    # Impedir duplicata pendente do mesmo usuário pro mesmo animal
+    existing = (
+        db.query(models.AdoptionRequest)
+        .filter(
+            models.AdoptionRequest.animal_id == payload.animal_id,
+            models.AdoptionRequest.user_id == user.id,
+            models.AdoptionRequest.status == "PENDENTE",
+        )
+        .first()
     )
+    if existing:
+        raise HTTPException(status_code=400, detail="Você já tem uma solicitação pendente para este animal.")
 
-    db.add(adoption_request)
+    req = models.AdoptionRequest(
+        animal_id=payload.animal_id,
+        user_id=user.id,
+        status="PENDENTE",
+        message=payload.message,
+    )
+    db.add(req)
     db.commit()
-    db.refresh(adoption_request)
-    return adoption_request
+    db.refresh(req)
+    return req
 
 
-@router.get(
-    "",
-    response_model=List[schemas.AdoptionRequestRead],
-)
-def list_adoption_requests(
-    status_filter: Optional[schemas.AdoptionStatus] = Query(
-        None,
-        description="Filtrar por status: PENDENTE, APROVADO, RECUSADO"
-    ),
-    user_id: Optional[int] = Query(None, description="Filtrar por id do usuário"),
-    animal_id: Optional[int] = Query(None, description="Filtrar por id do animal"),
+@router.get("", response_model=List[AdoptionRequestOut])
+def list_requests(
     db: Session = Depends(get_db),
+    user=Depends(get_current_user),
 ):
-    """
-    Lista solicitações de adoção com filtros simples.
-    """
-    query = db.query(models.AdoptionRequest)
+    # ADOTANTE: listar as próprias solicitações
+    if user.role == "ADOTANTE":
+        return (
+            db.query(models.AdoptionRequest)
+            .filter(models.AdoptionRequest.user_id == user.id)
+            .order_by(models.AdoptionRequest.id.desc())
+            .all()
+        )
 
-    if status_filter:
-        query = query.filter(models.AdoptionRequest.status == status_filter.value)
-    if user_id:
-        query = query.filter(models.AdoptionRequest.user_id == user_id)
-    if animal_id:
-        query = query.filter(models.AdoptionRequest.animal_id == animal_id)
+    # ONG: listar solicitações dos animais cadastrados por ela (Animal.owner_id)
+    if user.role == "ONG":
+        return (
+            db.query(models.AdoptionRequest)
+            .join(models.Animal, models.Animal.id == models.AdoptionRequest.animal_id)
+            .filter(models.Animal.owner_id == user.id)
+            .order_by(models.AdoptionRequest.id.desc())
+            .all()
+        )
 
-    return query.all()
+    # DOADOR / outros
+    return []
 
 
-@router.get(
-    "/{request_id}",
-    response_model=schemas.AdoptionRequestRead,
-)
-def get_adoption_request(
+@router.patch("/{request_id}", response_model=AdoptionRequestOut)
+def update_request_status(
     request_id: int,
+    payload: AdoptionRequestUpdate,
     db: Session = Depends(get_db),
+    user=Depends(get_current_user),
 ):
-    """
-    Retorna detalhes de uma solicitação específica.
-    """
-    adoption_request = db.query(models.AdoptionRequest).filter(
-        models.AdoptionRequest.id == request_id
-    ).first()
+    if user.role != "ONG":
+        raise HTTPException(status_code=403, detail="Apenas ONG pode aprovar/rejeitar solicitações.")
 
-    if not adoption_request:
-        raise HTTPException(status_code=404, detail="Solicitação de adoção não encontrada")
+    new_status = (payload.status or "").upper().strip()
+    if new_status not in VALID_STATUS:
+        raise HTTPException(status_code=400, detail=f"Status inválido: {new_status}")
 
-    return adoption_request
+    req = db.query(models.AdoptionRequest).filter(models.AdoptionRequest.id == request_id).first()
+    if not req:
+        raise HTTPException(status_code=404, detail="Solicitação não encontrada.")
 
-
-@router.patch(
-    "/{request_id}/status",
-    response_model=schemas.AdoptionRequestRead,
-)
-def update_adoption_request_status(
-    request_id: int,
-    status_in: schemas.AdoptionRequestUpdateStatus,
-    db: Session = Depends(get_db),
-):
-    """
-    Atualiza o status de uma solicitação de adoção.
-
-    Regra:
-    - Se status == APROVADO, animal.available = False
-    - Se status == RECUSADO, animal.available = True (se for essa a regra)
-    """
-    adoption_request = db.query(models.AdoptionRequest).filter(
-        models.AdoptionRequest.id == request_id
-    ).first()
-
-    if not adoption_request:
-        raise HTTPException(status_code=404, detail="Solicitação de adoção não encontrada")
-
-    animal = adoption_request.animal
+    animal = db.query(models.Animal).filter(models.Animal.id == req.animal_id).first()
     if not animal:
-        raise HTTPException(status_code=500, detail="Animal associado não encontrado")
+        raise HTTPException(status_code=404, detail="Animal relacionado não encontrado.")
 
-    # status_in.status é um Enum -> grava o valor string ("PENDENTE", "APROVADO", "RECUSADO")
-    adoption_request.status = status_in.status.value
+    # garantir que é a ONG dona do animal
+    if animal.owner_id != user.id:
+        raise HTTPException(status_code=403, detail="Você não tem permissão para este animal.")
 
-    if status_in.status == schemas.AdoptionStatus.APROVADO:
+    req.status = new_status
+
+    # Se aprovou, marca animal como indisponível
+    if new_status == "APROVADO":
         animal.available = False
-    elif status_in.status == schemas.AdoptionStatus.RECUSADO:
-        animal.available = True
-    # PENDENTE: não mexemos em available
+
+        # opcional: rejeitar automaticamente outras pendentes do mesmo animal
+        db.query(models.AdoptionRequest).filter(
+            models.AdoptionRequest.animal_id == req.animal_id,
+            models.AdoptionRequest.id != req.id,
+            models.AdoptionRequest.status == "PENDENTE",
+        ).update({"status": "REJEITADO"})
 
     db.commit()
-    db.refresh(adoption_request)
-    return adoption_request
+    db.refresh(req)
+    return req
