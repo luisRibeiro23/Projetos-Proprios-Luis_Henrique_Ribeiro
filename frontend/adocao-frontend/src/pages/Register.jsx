@@ -32,8 +32,14 @@ export default function Register() {
       // ex: POST /auth/register
       await api("/auth/register", {
         method: "POST",
-        body: JSON.stringify({ name, email, password, role }),
+        body: {
+          name,
+          email,
+          password,
+          role, // "ADOTANTE" | "ONG" | "DOADOR"
+        },
       });
+
 
       setOk("Conta criada! Agora faça login.");
       // se preferir ir direto pro login:
