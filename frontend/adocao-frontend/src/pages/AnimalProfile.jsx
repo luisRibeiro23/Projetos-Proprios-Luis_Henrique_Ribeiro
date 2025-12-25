@@ -146,11 +146,12 @@ export default function AnimalProfile() {
 
       await api("/adoption-requests", {
         method: "POST",
-        body: JSON.stringify({
-          animal_id: Number(id),
+        body: {
+          animal_id: animalId,
           message: "Gostaria de adotar este animal",
-        }),
+        },
       });
+
 
       // atualiza requests pra travar o botão
       const dataReqs = await api("/adoption-requests");
