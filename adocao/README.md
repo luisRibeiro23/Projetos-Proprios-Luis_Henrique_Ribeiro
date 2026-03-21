@@ -1,4 +1,4 @@
-# 🐶 AdoCÃO – Sistema de Adoção de Animais
+# AdoCÃO – Sistema de Adoção de Animais
 
 Sistema web completo para adoção de animais, com backend em FastAPI e frontend em React (Vite),
 implementando autenticação, autorização por papéis e fluxo completo de adoção.
@@ -12,7 +12,7 @@ implementando autenticação, autorização por papéis e fluxo completo de ado�
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+##  Tecnologias Utilizadas
 
 ### Backend
 - **Python + FastAPI**
@@ -32,7 +32,7 @@ implementando autenticação, autorização por papéis e fluxo completo de ado�
 
 ---
 
-## 🔐 Segurança Implementada
+##  Segurança Implementada
 
 - Autenticação com **JWT**
 - Senhas armazenadas com **hash (bcrypt)**
@@ -45,7 +45,7 @@ implementando autenticação, autorização por papéis e fluxo completo de ado�
 
 ---
 
-## 🔄 Funcionalidades
+##  Funcionalidades
 
 - Cadastro e login de usuários
 - Diferenciação de usuários por papel
@@ -58,7 +58,7 @@ implementando autenticação, autorização por papéis e fluxo completo de ado�
 
 ---
 
-## 📦 Como rodar localmente
+##  Como rodar localmente
 
 ### Backend
 ```bash
